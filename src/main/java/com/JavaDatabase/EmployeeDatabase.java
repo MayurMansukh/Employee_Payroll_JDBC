@@ -67,9 +67,15 @@ public class EmployeeDatabase {
         return payrollServiceData;
     }
 
-
-
-
-
+    public void UpdateData(){
+        String SqlQuery="update PayrollServiceTable set Salary=40000 where id=1";
+        try {
+            Connection connection=this.getConnection();
+            Statement statement=connection.createStatement();
+            long resultset=statement.executeUpdate(SqlQuery);
+        }catch (SQLException | IllegalAccessException e){
+            e.printStackTrace();
+        }
+    }
 
 }
