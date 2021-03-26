@@ -42,7 +42,7 @@ public class EmployeeDatabase {
                 int id = resultSet.getInt(1);
                 String Name = resultSet.getString(2);
                 Date StartDate = resultSet.getDate(3);
-                String Gender = resultSet.getString(4);
+                String Gender=resultSet.getString(4);
                 int Salary = resultSet.getInt(5);
 
                 System.out.println();
@@ -51,7 +51,7 @@ public class EmployeeDatabase {
                 System.out.println("StartDate=" + StartDate);
                 System.out.println("Salary=" + Salary);
 
-                PayrollServiceData payrollServiceData1 = new PayrollServiceData(resultSet.getInt(1), resultSet.getString(2), resultSet.getDate(3), resultSet.getString(4), resultSet.getInt(5));
+                PayrollServiceData payrollServiceData1 = new PayrollServiceData(resultSet.getInt(1), resultSet.getString(2), resultSet.getDate(3), resultSet.getString(4),resultSet.getInt(5));
                 payrollServiceData.add(payrollServiceData1);
 
 
@@ -64,6 +64,17 @@ public class EmployeeDatabase {
             e.printStackTrace();
         }
         return payrollServiceData;
+    }
+
+    public void update_Record_into_database_returnCount(){
+        String SqlQuery="update PayrollServiceTable set Salary=40000 where id=1";
+        try {
+            Connection connection=this.getConnection();
+            Statement statement=connection.createStatement();
+            long resultset=statement.executeUpdate(SqlQuery);
+        }catch (SQLException | IllegalAccessException e){
+            e.printStackTrace();
+        }
     }
 
 }
