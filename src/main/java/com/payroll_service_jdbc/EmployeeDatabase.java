@@ -34,8 +34,8 @@ public class EmployeeDatabase {
         List<PayrollServiceData> payrollServiceData = new ArrayList<>();
         try {
             Connection connection = this.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(Sql_Query);
+            PreparedStatement preparedStatement=connection.prepareStatement("select * from Payroll_ServiceTable");
+            ResultSet resultSet = preparedStatement.executeQuery(Sql_Query);
 
             while (resultSet.next()) {
 
@@ -49,14 +49,16 @@ public class EmployeeDatabase {
                 System.out.println("id=" + id);
                 System.out.println("Name=" + Name);
                 System.out.println("StartDate=" + StartDate);
+                System.out.println("Gender="+Gender);
                 System.out.println("Salary=" + Salary);
+
 
                 PayrollServiceData payrollServiceData1 = new PayrollServiceData(resultSet.getInt(1), resultSet.getString(2), resultSet.getDate(3), resultSet.getString(4),resultSet.getInt(5));
                 payrollServiceData.add(payrollServiceData1);
 
 
             }
-            statement.close();
+            preparedStatement.close();
             connection.close();
 
 
@@ -66,15 +68,5 @@ public class EmployeeDatabase {
         return payrollServiceData;
     }
 
-    public void update_Record_into_database_returnCount(){
-        String SqlQuery="update PayrollServiceTable set Salary=40000 where id=1";
-        try {
-            Connection connection=this.getConnection();
-            Statement statement=connection.createStatement();
-            long resultset=statement.executeUpdate(SqlQuery);
-        }catch (SQLException | IllegalAccessException e){
-            e.printStackTrace();
-        }
-    }
 
 }
