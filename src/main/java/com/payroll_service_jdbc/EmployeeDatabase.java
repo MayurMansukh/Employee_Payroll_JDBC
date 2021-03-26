@@ -29,6 +29,41 @@ public class EmployeeDatabase {
 
     }
 
+    public List<PayrollServiceData> readData() {
+        String Sql_Query = "select * from Payroll_ServiceTable";
+        List<PayrollServiceData> payrollServiceData = new ArrayList<>();
+        try {
+            Connection connection = this.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(Sql_Query);
 
+            while (resultSet.next()) {
+
+                int id = resultSet.getInt(1);
+                String Name = resultSet.getString(2);
+                Date StartDate = resultSet.getDate(3);
+                String Gender = resultSet.getString(4);
+                int Salary = resultSet.getInt(5);
+
+                System.out.println();
+                System.out.println("id=" + id);
+                System.out.println("Name=" + Name);
+                System.out.println("StartDate=" + StartDate);
+                System.out.println("Salary=" + Salary);
+
+                PayrollServiceData payrollServiceData1 = new PayrollServiceData(resultSet.getInt(1), resultSet.getString(2), resultSet.getDate(3), resultSet.getString(4), resultSet.getInt(5));
+                payrollServiceData.add(payrollServiceData1);
+
+
+            }
+            statement.close();
+            connection.close();
+
+
+        } catch (SQLException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return payrollServiceData;
+    }
 
 }
