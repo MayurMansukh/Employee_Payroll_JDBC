@@ -1,5 +1,6 @@
 package com.payroll_service_jdbc;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,5 +83,44 @@ public class EmployeeDatabase {
             }
             return 0;
         }
+
+    public List<PayrollServiceData> Payroll_Data_From_Salary(String Date) {
+        String Sql_Query = "select * from Payroll_ServiceTable";
+        List<PayrollServiceData> payrollServiceData = new ArrayList<>();
+        try {
+            Connection connection = this.getConnection();
+            PreparedStatement preparedStatement=connection.prepareStatement("select * from Payroll_ServiceTable where StartDate>=?");
+            preparedStatement.setDate(1, java.sql.Date.valueOf(Date));
+            ResultSet resultSet = preparedStatement.executeQuery(Sql_Query);
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt(1);
+                String Name = resultSet.getString(2);
+                Date StartDate = resultSet.getDate(3);
+                String Gender=resultSet.getString(4);
+                int Salary = resultSet.getInt(5);
+
+                System.out.println();
+                System.out.println("id=" + id);
+                System.out.println("Name=" + Name);
+                System.out.println("StartDate=" + StartDate);
+                System.out.println("Gender="+Gender);
+                System.out.println("Salary=" + Salary);
+
+
+                PayrollServiceData payrollServiceData1 = new PayrollServiceData(resultSet.getInt(1), resultSet.getString(2), resultSet.getDate(3), resultSet.getString(4),resultSet.getInt(5));
+                payrollServiceData.add(payrollServiceData1);
+
+
+            }
+            preparedStatement.close();
+            connection.close();
+
+
+        } catch (SQLException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return payrollServiceData;
+    }
 
 }
