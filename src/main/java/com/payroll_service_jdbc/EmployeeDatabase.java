@@ -107,20 +107,39 @@ public class EmployeeDatabase {
                 System.out.println("Gender="+Gender);
                 System.out.println("Salary=" + Salary);
 
-
                 PayrollServiceData payrollServiceData1 = new PayrollServiceData(resultSet.getInt(1), resultSet.getString(2), resultSet.getDate(3), resultSet.getString(4),resultSet.getInt(5));
                 payrollServiceData.add(payrollServiceData1);
-
-
             }
             preparedStatement.close();
             connection.close();
-
-
         } catch (SQLException | IllegalAccessException e) {
             e.printStackTrace();
         }
         return payrollServiceData;
+    }
+
+    public List<String> dataManipulation(){
+        List<String> list=new ArrayList();
+        try {
+            Connection connection=this.getConnection();
+            PreparedStatement preparedStatement=connection.prepareStatement("select gender,sum(salary), avg(Salary),min(Salary),max(Salary),count(Salary) from Payroll_ServiceTable group by Gender ");
+            ResultSet resultSet=preparedStatement.executeQuery();
+            while (resultSet.next()){
+                int index=1;
+                System.out.println("Gender: "+resultSet.getString(1));
+                System.out.println("Salary: "+resultSet.getString(2));
+                for (int i=0;i<10;i++){
+                    if(index<5) {
+                        list.add(i, resultSet.getString(index));
+                        index++;
+                    }
+                }
+                System.out.println(list);
+            }
+        }catch (SQLException | IllegalAccessException throwables){
+            throwables.printStackTrace();
+        }
+        return list;
     }
 
 }

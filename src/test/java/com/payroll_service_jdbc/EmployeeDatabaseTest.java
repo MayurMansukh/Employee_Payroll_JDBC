@@ -1,7 +1,6 @@
 package com.payroll_service_jdbc;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -30,4 +29,11 @@ class EmployeeDatabaseTest {
         List<PayrollServiceData>employeePayrollDataList=employeeDatabase.Payroll_Data_From_Salary(date);
         Assertions.assertEquals(2,employeePayrollDataList.size());
     }
+    @Test
+    public void retur_sum_avg_min_max_count(){
+        EmployeeDatabase employeeDatabase=new EmployeeDatabase();
+        List<String> list=employeeDatabase.dataManipulation();
+        Assertions.assertEquals(4,list.size());
+    }
+
 }
