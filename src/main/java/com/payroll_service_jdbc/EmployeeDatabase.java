@@ -68,5 +68,19 @@ public class EmployeeDatabase {
         return payrollServiceData;
     }
 
+    public long update_Record_into_database_returnCount_Using_PreparedStatement(double salary,int id){
+            try {
+                Connection connection=this.getConnection();
+                PreparedStatement preparedStatement=connection.prepareStatement("Update Payroll_ServiceTable set salary=? where id=? ; ");
+                preparedStatement.setDouble(1,salary);
+                preparedStatement.setInt(2,id);
+                long resultSet=preparedStatement.executeUpdate();
+                System.out.println(resultSet);
+                return resultSet;
+            } catch (SQLException | IllegalAccessException throwables) {
+                throwables.printStackTrace();
+            }
+            return 0;
+        }
 
 }
