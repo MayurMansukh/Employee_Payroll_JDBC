@@ -1,9 +1,8 @@
 package com.payroll_service_jdbc;
-
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 public class EmployeeDatabase {
 
     private Connection getConnection() throws IllegalAccessException {
@@ -53,16 +52,11 @@ public class EmployeeDatabase {
                 System.out.println("Gender="+Gender);
                 System.out.println("Salary=" + Salary);
 
-
                 PayrollServiceData payrollServiceData1 = new PayrollServiceData(resultSet.getInt(1), resultSet.getString(2), resultSet.getDate(3), resultSet.getString(4),resultSet.getInt(5));
                 payrollServiceData.add(payrollServiceData1);
-
-
             }
             preparedStatement.close();
             connection.close();
-
-
         } catch (SQLException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -82,7 +76,25 @@ public class EmployeeDatabase {
                 throwables.printStackTrace();
             }
             return 0;
+    }
+
+    public long insert_New_Record_into_database_returnCount_Using_PreparedStatement(int id, String name, String date,String gender,double salary){
+        try {
+            Connection connection=this.getConnection();
+            PreparedStatement preparedStatement=connection.prepareStatement("insert into Payroll_ServiceTable(ID,Name,StartDate,Gender,Salary) values(?,?,?,?,?); ");
+            preparedStatement.setInt(1,id);
+            preparedStatement.setString(2,name);
+            preparedStatement.setString(3, String.valueOf(Date.valueOf(date)));
+            preparedStatement.setString(4,gender);
+            preparedStatement.setDouble(5,salary);
+            int resultSet=preparedStatement.executeUpdate();
+            System.out.println(resultSet);
+            return resultSet;
+        } catch (SQLException | IllegalAccessException throwables) {
+            throwables.printStackTrace();
         }
+        return 0;
+    }
 
     public List<PayrollServiceData> Payroll_Data_From_Salary(String Date) {
         String Sql_Query = "select * from Payroll_ServiceTable";
