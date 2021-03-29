@@ -161,4 +161,34 @@ public class EmployeeDatabase {
         return 0;
     }
 
+    public void insert_Values_Into_Both_Tables(int id, String name, String date,String gender,double salary,int payroll_id) throws IllegalAccessException, SQLException {
+        Connection connection = this.getConnection();
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement=connection.prepareStatement("insert into Payroll_ServiceTable(ID,Name,StartDate,Gender,Salary) values(?,?,?,?,?); ");
+            preparedStatement.setInt(1,id);
+            preparedStatement.setString(2,name);
+            preparedStatement.setString(3, String.valueOf(Date.valueOf(date)));
+            preparedStatement.setString(4,gender);
+            preparedStatement.setDouble(5,salary);
+            int resultSet=preparedStatement.executeUpdate();
+
+
+            PreparedStatement preparedStatement1=connection.prepareStatement("insert into Payroll_Detail_Table(payroll_id,basicpay,deduction,taxpay,tax,netpay) values(?,?,?,?,?,?); ");
+            preparedStatement1.setInt(1,payroll_id);
+            preparedStatement1.setDouble(2, salary/20);
+            preparedStatement1.setDouble(3,salary/5);
+            preparedStatement1.setDouble(4,salary/2);
+            preparedStatement1.setDouble(5,salary/20);
+            preparedStatement1.setDouble(6,salary/10);
+            int resultSet1=preparedStatement1.executeUpdate();
+            connection.commit();
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+            connection.rollback();
+        }finally {
+            connection.close();
+        }
+    }
+
 }

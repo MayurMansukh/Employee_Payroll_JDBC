@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 
+import java.sql.SQLException;
 import java.util.List;
 class EmployeeDatabaseTest {
 
@@ -66,5 +67,21 @@ class EmployeeDatabaseTest {
         List<PayrollServiceData>payrollServiceDataList=employeeDatabase.readData();
         Assertions.assertEquals(3,payrollServiceDataList.size());
     }
+
+    @Test
+    void insert_New_Record_into_Both_Tables_test() throws SQLException, IllegalAccessException {
+        int id=3;
+        String name="Rahul";
+        String date="2020-4-10";
+        String gender="M";
+        double salary=50000;
+        int payroll_id=4;
+
+        EmployeeDatabase employeeDatabase=new EmployeeDatabase();
+        employeeDatabase.insert_Values_Into_Both_Tables(id,name,date,gender,salary,payroll_id);
+        List<PayrollServiceData>payrollServiceDataList=employeeDatabase.readData();
+        Assertions.assertEquals(4,payrollServiceDataList.size());
+    }
+
 
 }
