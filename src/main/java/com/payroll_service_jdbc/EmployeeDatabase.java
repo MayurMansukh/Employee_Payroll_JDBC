@@ -191,4 +191,18 @@ public class EmployeeDatabase {
         }
     }
 
+    public void deleteRecordFromPayroll_ServiceTable(String name) throws SQLException, IllegalAccessException {
+        Connection connection = this.getConnection();
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement = connection.prepareStatement("delete from Payroll_ServiceTable where Name=?; ");
+            preparedStatement.setString(1, name);
+            int resultSet = preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            connection.rollback();
+        }
+    }
+
 }

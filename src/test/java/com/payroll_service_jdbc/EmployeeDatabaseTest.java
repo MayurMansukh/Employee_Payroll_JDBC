@@ -83,5 +83,14 @@ class EmployeeDatabaseTest {
         Assertions.assertEquals(4,payrollServiceDataList.size());
     }
 
+    @Test
+    public void deleting_employee_from_Payroll_Service_Table_test() throws SQLException, IllegalAccessException {
+        String name="rajan";
+        EmployeeDatabase employeeDatabase=new EmployeeDatabase();
+        employeeDatabase.deleteRecordFromPayroll_ServiceTable(name);
+        List<PayrollServiceData> employeePayrollDataList=employeeDatabase.readData();
+        Assertions.assertEquals(3,employeePayrollDataList.size());
+    }
+
 
 }
