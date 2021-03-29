@@ -3,8 +3,7 @@ package com.payroll_service_jdbc;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import javax.xml.crypto.Data;
-import java.util.Date;
+
 import java.util.List;
 class EmployeeDatabaseTest {
 
@@ -12,7 +11,7 @@ class EmployeeDatabaseTest {
     void readData_And_ReturnCount() {
         EmployeeDatabase employeeDatabase=new EmployeeDatabase();
         List<PayrollServiceData>payrollServiceDataList=employeeDatabase.readData();
-        Assertions.assertEquals(2,payrollServiceDataList.size());
+        Assertions.assertEquals(3,payrollServiceDataList.size());
     }
 
     @Test
@@ -22,6 +21,22 @@ class EmployeeDatabaseTest {
         EmployeeDatabase employeeDatabase=new EmployeeDatabase();
         long result=employeeDatabase.update_Record_into_database_returnCount_Using_PreparedStatement(salary,id);
         Assertions.assertEquals(2,result);
+    }
+
+
+
+    @Test
+    public void reurn_employee_datails_for_a_given_date_range(){
+        String date = "2021-01-01";
+        EmployeeDatabase employeeDatabase=new EmployeeDatabase();
+        List<PayrollServiceData>employeePayrollDataList= employeeDatabase.Payroll_Data_From_Salary(date);
+        Assertions.assertEquals(2,employeePayrollDataList.size());
+    }
+    @Test
+    public void return_sum_avg_min_max_count(){
+        EmployeeDatabase employeeDatabase=new EmployeeDatabase();
+        List<String> list=employeeDatabase.dataManipulation();
+        Assertions.assertEquals(4,list.size());
     }
 
     @Test
@@ -38,17 +53,18 @@ class EmployeeDatabaseTest {
     }
 
     @Test
-    public void reurn_employee_datails_for_a_given_date_range(){
-        String date = "2021-01-01";
+    public void insert_in_payroll_details_test() {
+        int payroll_id=1;
+        double basicpay=10000;
+        double deduction=20000;
+        double taxpay=1000;
+        double tax=500;
+        double netpay=7500;
+
         EmployeeDatabase employeeDatabase=new EmployeeDatabase();
-        List<PayrollServiceData>employeePayrollDataList= employeeDatabase.Payroll_Data_From_Salary(date);
-        Assertions.assertEquals(2,employeePayrollDataList.size());
-    }
-    @Test
-    public void return_sum_avg_min_max_count(){
-        EmployeeDatabase employeeDatabase=new EmployeeDatabase();
-        List<String> list=employeeDatabase.dataManipulation();
-        Assertions.assertEquals(4,list.size());
+        employeeDatabase.insert_Into_Payroll_Detail_Table(payroll_id,basicpay,deduction,taxpay,tax,netpay);
+        List<PayrollServiceData>payrollServiceDataList=employeeDatabase.readData();
+        Assertions.assertEquals(3,payrollServiceDataList.size());
     }
 
 }

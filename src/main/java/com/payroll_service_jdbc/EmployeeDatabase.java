@@ -35,6 +35,7 @@ public class EmployeeDatabase {
         try {
             Connection connection = this.getConnection();
             PreparedStatement preparedStatement=connection.prepareStatement("select * from Payroll_ServiceTable");
+
             ResultSet resultSet = preparedStatement.executeQuery(Sql_Query);
 
             while (resultSet.next()) {
@@ -45,16 +46,10 @@ public class EmployeeDatabase {
                 String Gender=resultSet.getString(4);
                 int Salary = resultSet.getInt(5);
 
-                System.out.println();
-                System.out.println("id=" + id);
-                System.out.println("Name=" + Name);
-                System.out.println("StartDate=" + StartDate);
-                System.out.println("Gender="+Gender);
-                System.out.println("Salary=" + Salary);
-
                 PayrollServiceData payrollServiceData1 = new PayrollServiceData(resultSet.getInt(1), resultSet.getString(2), resultSet.getDate(3), resultSet.getString(4),resultSet.getInt(5));
                 payrollServiceData.add(payrollServiceData1);
             }
+            System.out.println(payrollServiceData.toString());
             preparedStatement.close();
             connection.close();
         } catch (SQLException | IllegalAccessException e) {
@@ -64,18 +59,18 @@ public class EmployeeDatabase {
     }
 
     public long update_Record_into_database_returnCount_Using_PreparedStatement(double salary,int id){
-            try {
-                Connection connection=this.getConnection();
-                PreparedStatement preparedStatement=connection.prepareStatement("Update Payroll_ServiceTable set salary=? where id=? ; ");
-                preparedStatement.setDouble(1,salary);
-                preparedStatement.setInt(2,id);
-                long resultSet=preparedStatement.executeUpdate();
-                System.out.println(resultSet);
-                return resultSet;
-            } catch (SQLException | IllegalAccessException throwables) {
-                throwables.printStackTrace();
-            }
-            return 0;
+        try {
+            Connection connection=this.getConnection();
+            PreparedStatement preparedStatement=connection.prepareStatement("Update Payroll_ServiceTable set salary=? where id=? ; ");
+            preparedStatement.setDouble(1,salary);
+            preparedStatement.setInt(2,id);
+            long resultSet=preparedStatement.executeUpdate();
+            System.out.println(resultSet);
+            return resultSet;
+        } catch (SQLException | IllegalAccessException throwables) {
+            throwables.printStackTrace();
+        }
+        return 0;
     }
 
     public long insert_New_Record_into_database_returnCount_Using_PreparedStatement(int id, String name, String date,String gender,double salary){
@@ -112,16 +107,10 @@ public class EmployeeDatabase {
                 String Gender=resultSet.getString(4);
                 int Salary = resultSet.getInt(5);
 
-                System.out.println();
-                System.out.println("id=" + id);
-                System.out.println("Name=" + Name);
-                System.out.println("StartDate=" + StartDate);
-                System.out.println("Gender="+Gender);
-                System.out.println("Salary=" + Salary);
-
                 PayrollServiceData payrollServiceData1 = new PayrollServiceData(resultSet.getInt(1), resultSet.getString(2), resultSet.getDate(3), resultSet.getString(4),resultSet.getInt(5));
                 payrollServiceData.add(payrollServiceData1);
             }
+            System.out.println(payrollServiceData.toString());
             preparedStatement.close();
             connection.close();
         } catch (SQLException | IllegalAccessException e) {
@@ -152,6 +141,24 @@ public class EmployeeDatabase {
             throwables.printStackTrace();
         }
         return list;
+    }
+    public int insert_Into_Payroll_Detail_Table(int payroll_id,double basicpay,double deduction,double taxpay,double tax,double netpay){
+        try{
+            Connection connection=this.getConnection();
+            PreparedStatement preparedStatement=connection.prepareStatement("insert into Payroll_Detail_Table(payroll_id,basicpay,deduction,taxpay,tax,netpay) values(?,?,?,?,?,?); ");
+
+            preparedStatement.setInt(1,payroll_id);
+            preparedStatement.setDouble(2, basicpay);
+            preparedStatement.setDouble(3,deduction);
+            preparedStatement.setDouble(4,taxpay);
+            preparedStatement.setDouble(5,tax);
+            preparedStatement.setDouble(6,netpay);
+            int resultSet=preparedStatement.executeUpdate();
+            return resultSet;
+        }catch (SQLException | IllegalAccessException throwables){
+            throwables.printStackTrace();
+        }
+        return 0;
     }
 
 }
