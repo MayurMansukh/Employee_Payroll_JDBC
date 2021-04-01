@@ -125,5 +125,31 @@ class EmployeeDatabaseTest {
 
 
     }
+    @Test
+    public void add_multiple_records_using_thread_and_without_thread() throws SQLException, IllegalAccessException,SQLException {
+        EmployeeDatabase employeeDatabase=new EmployeeDatabase();
+        List<PayrollServiceData> list=new ArrayList<>();
+        list.add(new PayrollServiceData(4,"raghu", Date.valueOf("2029-03-11"),"M",70000));
+        list.add(new PayrollServiceData(5,"naryani",Date.valueOf("2029-03-11"),"F",90000));
+        list.add(new PayrollServiceData(6,"yani",Date.valueOf("2029-03-11"),"F",90000));
+        Instant start =Instant.now();
+        employeeDatabase.insetRecordsUsingArrays(list);
+        Instant end = Instant.now();
+        System.out.println("Duration without thread: "+ Duration.between(start,end));
+
+        Instant thredstart =Instant.now();
+        employeeDatabase.insetRecordsUsingArraysUsingThread(list);
+        Instant threadend = Instant.now();
+        System.out.println("Duration with thread: "+ Duration.between(thredstart,threadend));
+
+        List<PayrollServiceData> employeePayrollDataList=employeeDatabase.readData();
+        Assertions.assertEquals(3,employeePayrollDataList.size());
+
+
+
+
+    }
+
+
 
 }
