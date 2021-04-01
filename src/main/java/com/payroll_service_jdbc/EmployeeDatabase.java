@@ -4,8 +4,9 @@ import java.sql.Date;
 import java.util.*;
 
 public class EmployeeDatabase {
+    private int ConnectionCounter=0;
 
-    private Connection getConnection() throws IllegalAccessException {
+    private synchronized Connection getConnection() throws IllegalAccessException {
         String JDBCURL = "jdbc:mysql://localhost:3306/payroll_service?useSSL=false";
         String UserName = "root";
         String Password = "P@ssw0rd1@2";
@@ -18,9 +19,11 @@ public class EmployeeDatabase {
 
         }
         try {
-            System.out.println("Connecting to database" + JDBCURL);
+            //System.out.println("Connecting to database" + JDBCURL);
+            System.out.println("Processing Thread "+Thread.currentThread().getName()+"Connecting to database with id "+ConnectionCounter);
             connection = DriverManager.getConnection(JDBCURL, UserName, Password);
-            System.out.println("Connection succesfully" + connection);
+            System.out.println("Processing Thread "+Thread.currentThread().getName()+" id "+ConnectionCounter+ " Connection was sucessfull!!! " +connection);
+           // System.out.println("Connection succesfully" + connection);
         } catch (Exception e) {
             e.printStackTrace();
 
