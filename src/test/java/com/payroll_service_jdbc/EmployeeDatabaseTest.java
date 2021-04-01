@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,6 +106,23 @@ class EmployeeDatabaseTest {
         employeeDatabase.insetRecordsUsingArrays(list);
         List<PayrollServiceData> employeePayrollDataList=employeeDatabase.readData();
         Assertions.assertEquals(7,employeePayrollDataList.size());
+
+    }
+
+    @Test
+    public void add_multiple_records_and_calculate_duration() throws SQLException, IllegalAccessException,SQLException {
+        EmployeeDatabase employeeDatabase=new EmployeeDatabase();
+        List<PayrollServiceData> list=new ArrayList<>();
+        list.add(new PayrollServiceData(4,"raghu", Date.valueOf("2029-03-11"),"M",70000));
+        list.add(new PayrollServiceData(5,"naryani",Date.valueOf("2029-03-11"),"F",90000));
+
+        Instant start =Instant.now();
+        employeeDatabase.insetRecordsUsingArrays(list);
+        Instant end = Instant.now();
+        System.out.println("Duration without thread"+ Duration.between(start,end));
+        List<PayrollServiceData> employeePayrollDataList=employeeDatabase.readData();
+        Assertions.assertEquals(15,employeePayrollDataList.size());
+
 
     }
 

@@ -232,6 +232,5 @@ public class EmployeeDatabase {
             connection.rollback();
         }
     }
-
-    }
+}
 
