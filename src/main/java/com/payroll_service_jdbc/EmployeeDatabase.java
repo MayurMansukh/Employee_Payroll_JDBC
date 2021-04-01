@@ -1,6 +1,7 @@
 package com.payroll_service_jdbc;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class EmployeeDatabase {
@@ -11,7 +12,7 @@ public class EmployeeDatabase {
         String Password = "P@ssw0rd1@2";
         Connection connection = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             System.out.println("Dreiver loaded");
         } catch (ClassNotFoundException e) {
             throw new IllegalAccessException(String.format("Driver not found in classpath%s", e));
@@ -29,11 +30,13 @@ public class EmployeeDatabase {
 
     }
 
-    public List<PayrollServiceData> readData() {
+    public List<PayrollServiceData> readData() throws IllegalAccessException, SQLException {
         String Sql_Query = "select * from Payroll_ServiceTable";
         List<PayrollServiceData> payrollServiceData = new ArrayList<>();
+        Connection connection=null;
+
         try {
-            Connection connection = this.getConnection();
+            connection = this.getConnection();
             PreparedStatement preparedStatement=connection.prepareStatement("select * from Payroll_ServiceTable");
 
             ResultSet resultSet = preparedStatement.executeQuery(Sql_Query);
@@ -50,10 +53,11 @@ public class EmployeeDatabase {
                 payrollServiceData.add(payrollServiceData1);
             }
             System.out.println(payrollServiceData.toString());
-            preparedStatement.close();
-            connection.close();
+
         } catch (SQLException | IllegalAccessException e) {
             e.printStackTrace();
+        }finally {
+            connection.close();
         }
         return payrollServiceData;
     }
@@ -205,4 +209,29 @@ public class EmployeeDatabase {
         }
     }
 
-}
+    public void insetRecordsUsingArrays(List<PayrollServiceData> payrollServiceData) throws SQLException, IllegalAccessException {
+        Connection connection = this.getConnection();
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement = connection.prepareStatement("insert into payroll_detail(id,name,startdate,gender,salary) values(?,?,?,?,?); ");
+            for (Iterator<PayrollServiceData> iterator = payrollServiceData.iterator(); iterator.hasNext(); ) {
+                PayrollServiceData payrollServiceData1 = (PayrollServiceData) iterator.next();
+                System.out.println("employee being added  " + payrollServiceData1.getName());
+                preparedStatement.setInt(1, payrollServiceData1.getId());
+                preparedStatement.setString(2, payrollServiceData1.getName());
+                preparedStatement.setDate(3, payrollServiceData1.getStartDate());
+                preparedStatement.setString(4, payrollServiceData1.getGender());
+                preparedStatement.setDouble(5, payrollServiceData1.getSalary());
+                System.out.println("employee Added  " + payrollServiceData1.Name);
+                preparedStatement.addBatch();
+            }
+            int[] recordUpdateCounts = preparedStatement.executeBatch();
+            connection.commit();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            connection.rollback();
+        }
+    }
+
+    }
+

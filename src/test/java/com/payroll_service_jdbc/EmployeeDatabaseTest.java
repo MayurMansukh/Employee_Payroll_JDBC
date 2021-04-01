@@ -3,13 +3,15 @@ package com.payroll_service_jdbc;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
 class EmployeeDatabaseTest {
 
     @Test
-    void readData_And_ReturnCount() {
+    void readData_And_ReturnCount() throws SQLException, IllegalAccessException {
         EmployeeDatabase employeeDatabase=new EmployeeDatabase();
         List<PayrollServiceData>payrollServiceDataList=employeeDatabase.readData();
         Assertions.assertEquals(3,payrollServiceDataList.size());
@@ -41,7 +43,7 @@ class EmployeeDatabaseTest {
     }
 
     @Test
-    void insert_New_Record_into_database_returnCount_Using_PreparedStatement(){
+    void insert_New_Record_into_database_returnCount_Using_PreparedStatement() throws SQLException, IllegalAccessException {
         int id=3;
         String name="rajan";
         String date="2020-3-9";
@@ -54,7 +56,7 @@ class EmployeeDatabaseTest {
     }
 
     @Test
-    public void insert_in_payroll_details_test() {
+    public void insert_in_payroll_details_test() throws SQLException, IllegalAccessException {
         int payroll_id=1;
         double basicpay=10000;
         double deduction=20000;
@@ -92,5 +94,17 @@ class EmployeeDatabaseTest {
         Assertions.assertEquals(3,employeePayrollDataList.size());
     }
 
+    @Test
+
+    public void insert_multiple_values_into_a_table_at_a_time() throws SQLException, IllegalAccessException, SQLException {
+        EmployeeDatabase employeeDatabase=new EmployeeDatabase();
+        List<PayrollServiceData> list=new ArrayList<>();
+        list.add(new PayrollServiceData(4,"Nath", Date.valueOf("2029-03-11"),"M",40000));
+        list.add(new PayrollServiceData(5,"nilam",Date.valueOf("2029-03-11"),"F",50000));
+        employeeDatabase.insetRecordsUsingArrays(list);
+        List<PayrollServiceData> employeePayrollDataList=employeeDatabase.readData();
+        Assertions.assertEquals(7,employeePayrollDataList.size());
+
+    }
 
 }
