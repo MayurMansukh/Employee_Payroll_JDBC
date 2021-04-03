@@ -39,13 +39,13 @@ class JSONServerEmployeeDataTest {
         }
 
     @Test
-    public void addNewEmployee_shouldReturn_201ResponseCode(){
+    public void addMultipleEmployee_shouldReturn_201ResponseCode(){
         JSONServerEmployeeData[] restAssureEmployeeData=getEmployeelist();
-        JSONServerEmployeeData jsonServerEmployeeData1=new JSONServerEmployeeData(5,"mayur",3000);
+        JSONServerEmployeeData jsonServerEmployeeData1=new JSONServerEmployeeData(6,"Rahul",3000);
         Response response=addEmployeeDataToJsonServer(jsonServerEmployeeData1);
         int statusCode= response.statusCode();
         Assertions.assertEquals(201,statusCode);
-        Assertions.assertEquals(4,restAssureEmployeeData.length);
+        Assertions.assertEquals(6,restAssureEmployeeData.length);
     }
 
 }
