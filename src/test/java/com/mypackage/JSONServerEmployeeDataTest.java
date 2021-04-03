@@ -38,4 +38,14 @@ class JSONServerEmployeeDataTest {
             Assertions.assertEquals(4,restAssureEmployeeData.length);
         }
 
+    @Test
+    public void addNewEmployee_shouldReturn_201ResponseCode(){
+        JSONServerEmployeeData[] restAssureEmployeeData=getEmployeelist();
+        JSONServerEmployeeData jsonServerEmployeeData1=new JSONServerEmployeeData(5,"mayur",3000);
+        Response response=addEmployeeDataToJsonServer(jsonServerEmployeeData1);
+        int statusCode= response.statusCode();
+        Assertions.assertEquals(201,statusCode);
+        Assertions.assertEquals(4,restAssureEmployeeData.length);
+    }
+
 }
