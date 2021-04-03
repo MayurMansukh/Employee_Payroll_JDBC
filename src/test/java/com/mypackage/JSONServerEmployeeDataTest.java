@@ -62,6 +62,20 @@ class JSONServerEmployeeDataTest {
         int statusCode=response.getStatusCode();
         Assertions.assertEquals(200,statusCode);
     }
+    @Test
+    public void deleteEmployee_ShouldRetun_200ResponseCode() throws SQLException {
+        JSONServerEmployeeData[] restAssureEmployeeData=getEmployeelist();
+        String empJson=new Gson().toJson(restAssureEmployeeData);
+
+        RequestSpecification requestSpecification=RestAssured.given();
+        requestSpecification.header("Content-Type","application/json");
+        requestSpecification.body(empJson);
+        Response response=requestSpecification.delete("/employees/delete/5");
+
+        int statusCode=response.getStatusCode();
+        Assertions.assertEquals(200,statusCode);
+    }
+
 
 
 }
