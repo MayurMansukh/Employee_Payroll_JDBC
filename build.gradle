@@ -13,6 +13,10 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     implementation 'mysql:mysql-connector-java:8.0.11'
+    compile group: 'io.rest-assured', name: 'scala-support', version: '4.2.0'
+    testImplementation group: 'io.rest-assured', name: 'scala-support', version: '4.3.3'
+    compile "com.google.code.gson:gson:2.2+"
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
 }
 

@@ -1,4 +1,4 @@
-package com.payroll_service_jdbc;
+package com.mypackage;
 
 import java.sql.Date;
 

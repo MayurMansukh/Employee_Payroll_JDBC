@@ -1,4 +1,4 @@
-package com.payroll_service_jdbc;
+package com.mypackage;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
